@@ -1,56 +1,70 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { TrendingUp, DollarSign, Users, Percent } from "lucide-react";
 import { KPICard } from "@/components/dashboard/KPICard";
 import { SalesEvolutionChart } from "@/components/dashboard/SalesEvolutionChart";
 import { TopClientsChart } from "@/components/dashboard/TopClientsChart";
 import { ProductDistributionChart } from "@/components/dashboard/ProductDistributionChart";
 import { DateRangeFilter } from "@/components/dashboard/DateRangeFilter";
-import { DollarSign, TrendingUp, Percent, Activity } from "lucide-react";
-
-// Données mock - À remplacer par vos vraies données du Data Warehouse
-const mockSalesEvolution = [
-  { date: "Jan", sales: 45000 },
-  { date: "Fév", sales: 52000 },
-  { date: "Mar", sales: 48000 },
-  { date: "Avr", sales: 61000 },
-  { date: "Mai", sales: 55000 },
-  { date: "Juin", sales: 67000 },
-  { date: "Juil", sales: 72000 },
-  { date: "Août", sales: 68000 },
-  { date: "Sep", sales: 78000 },
-  { date: "Oct", sales: 85000 },
-  { date: "Nov", sales: 91000 },
-  { date: "Déc", sales: 98000 },
-];
-
-const mockTopClients = [
-  { customerName: "Client A", totalSales: 125000 },
-  { customerName: "Client B", totalSales: 98000 },
-  { customerName: "Client C", totalSales: 87000 },
-  { customerName: "Client D", totalSales: 76000 },
-  { customerName: "Client E", totalSales: 65000 },
-  { customerName: "Client F", totalSales: 54000 },
-  { customerName: "Client G", totalSales: 48000 },
-  { customerName: "Client H", totalSales: 42000 },
-  { customerName: "Client I", totalSales: 38000 },
-  { customerName: "Client J", totalSales: 35000 },
-];
-
-const mockProductDistribution = [
-  { productName: "Produit A", value: 185000 },
-  { productName: "Produit B", value: 142000 },
-  { productName: "Produit C", value: 128000 },
-  { productName: "Produit D", value: 98000 },
-  { productName: "Produit E", value: 67000 },
-];
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const Dashboard = () => {
   const [selectedPeriod, setSelectedPeriod] = useState("30d");
-  const totalSales = 820000;
-  const avgTaxRate = 18.5;
+  const [stats, setStats] = useState({ totalSales: 0, avgTaxRate: 0, growth: 0, clientCount: 0 });
+  const [salesEvolution, setSalesEvolution] = useState<any[]>([]);
+  const [topClients, setTopClients] = useState<any[]>([]);
+  const [productDistribution, setProductDistribution] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    fetchData();
+  }, [selectedPeriod]);
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      // Fetch sales stats
+      const { data: statsData, error: statsError } = await supabase.functions.invoke('get-sales-stats', {
+        body: { period: selectedPeriod }
+      });
+      if (statsError) throw statsError;
+      setStats(statsData);
+
+      // Fetch sales evolution
+      const { data: evolutionData, error: evolutionError } = await supabase.functions.invoke('get-sales-evolution', {
+        body: { period: selectedPeriod }
+      });
+      if (evolutionError) throw evolutionError;
+      setSalesEvolution(evolutionData);
+
+      // Fetch top clients
+      const { data: clientsData, error: clientsError } = await supabase.functions.invoke('get-top-clients', {
+        body: { period: selectedPeriod }
+      });
+      if (clientsError) throw clientsError;
+      setTopClients(clientsData);
+
+      // Fetch product distribution
+      const { data: productsData, error: productsError } = await supabase.functions.invoke('get-product-distribution', {
+        body: { period: selectedPeriod }
+      });
+      if (productsError) throw productsError;
+      setProductDistribution(productsData);
+    } catch (error: any) {
+      console.error('Error fetching data:', error);
+      toast({
+        title: "Erreur de connexion",
+        description: "Impossible de récupérer les données du Data Warehouse",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
@@ -64,44 +78,37 @@ const Dashboard = () => {
         />
       </div>
 
-      {/* KPIs */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         <KPICard
-          title="Chiffre d'Affaires Total"
-          value={totalSales}
+          title="Chiffre d'affaires total"
+          value={loading ? "..." : `${Math.round(stats.totalSales).toLocaleString('fr-FR')} €`}
           icon={DollarSign}
-          prefix="€"
-          trend={{ value: 12.5, isPositive: true }}
+          trend={loading ? undefined : { value: Math.abs(stats.growth), isPositive: stats.growth >= 0 }}
         />
         <KPICard
-          title="Taux Moyen de Taxe"
-          value={avgTaxRate}
+          title="Taux moyen de taxe"
+          value={loading ? "..." : `${stats.avgTaxRate.toFixed(1)}%`}
           icon={Percent}
-          suffix="%"
         />
         <KPICard
           title="Croissance"
-          value="+12.5"
+          value={loading ? "..." : `${stats.growth > 0 ? '+' : ''}${stats.growth.toFixed(1)}%`}
           icon={TrendingUp}
-          suffix="%"
-          trend={{ value: 2.3, isPositive: true }}
+          trend={loading ? undefined : { value: Math.abs(stats.growth), isPositive: stats.growth >= 0 }}
         />
         <KPICard
-          title="Nombre de Clients"
-          value={156}
-          icon={Activity}
-          trend={{ value: 8.1, isPositive: true }}
+          title="Nombre de clients"
+          value={loading ? "..." : stats.clientCount.toString()}
+          icon={Users}
         />
       </div>
 
-      {/* Charts Grid */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        <div className="lg:col-span-2">
-          <SalesEvolutionChart data={mockSalesEvolution} />
-        </div>
-        <TopClientsChart data={mockTopClients} />
-        <ProductDistributionChart data={mockProductDistribution} />
+      <div className="grid gap-6 md:grid-cols-2">
+        <SalesEvolutionChart data={salesEvolution} />
+        <TopClientsChart data={topClients} />
       </div>
+
+      <ProductDistributionChart data={productDistribution} />
     </div>
   );
 };
