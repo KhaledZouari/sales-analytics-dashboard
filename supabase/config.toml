@@ -1,13 +1,1 @@
 project_id = "ogsktrsocxqyuprbgstd"
-
-[functions.get-sales-stats]
-verify_jwt = false
-
-[functions.get-sales-evolution]
-verify_jwt = false
-
-[functions.get-top-clients]
-verify_jwt = false
-
-[functions.get-product-distribution]
-verify_jwt = false
