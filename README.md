@@ -1,73 +1,88 @@
-# Welcome to your Lovable project
+# Stats Weaver Dashboard
 
-## Project info
+Tableau de bord web pour consulter des indicateurs commerciaux, suivre leur
+évolution et explorer les clients et produits associés.
 
-**URL**: https://lovable.dev/projects/68810c44-bfdf-4311-8d50-3b627197684f
+## Fonctionnalités
 
-## How can I edit this code?
+- Vue synthétique d’indicateurs clés avec filtre par période.
+- Graphiques d’évolution des ventes, de répartition des produits et des
+  principaux clients.
+- Pages dédiées au tableau de bord, aux statistiques, aux clients, aux
+  produits et aux paramètres.
+- Accès aux données via un client Supabase typé.
 
-There are several ways of editing your application.
+## Stack
 
-**Use Lovable**
+React 18, TypeScript, Vite, Supabase, TanStack Query, Recharts, shadcn/ui,
+Tailwind CSS, ESLint et Vitest.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/68810c44-bfdf-4311-8d50-3b627197684f) and start prompting.
+## Architecture
 
-Changes made via Lovable will be committed automatically to this repo.
+```mermaid
+flowchart LR
+    Browser[Interface React] --> Pages[Pages analytiques]
+    Pages --> Components[Composants de dashboard]
+    Pages --> Query[TanStack Query]
+    Query --> Client[Client Supabase]
+    Client --> Database[(Supabase)]
+```
 
-**Use your preferred IDE**
+## Installation
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Prérequis : Node.js 20 et npm.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
+git clone https://github.com/KhaledZouari/stats-weaver-dash.git
+cd stats-weaver-dash
+cp .env.example .env
+npm ci
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Sous PowerShell, utiliser `Copy-Item .env.example .env` à la place de `cp`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Configuration
 
-**Use GitHub Codespaces**
+| Variable | Description |
+| --- | --- |
+| `VITE_SUPABASE_PROJECT_ID` | Identifiant public du projet Supabase. |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Clé client publiable Supabase. |
+| `VITE_SUPABASE_URL` | URL publique du projet Supabase. |
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Ne jamais placer de clé `service_role` dans une variable exposée par Vite.
 
-## What technologies are used for this project?
+## Tests et qualité
 
-This project is built with:
+```bash
+npm run lint
+npm test
+npm run build
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+La CI exécute ces commandes sur chaque pull request et chaque push sur `main`.
 
-## How can I deploy this project?
+## API et données
 
-Simply open [Lovable](https://lovable.dev/projects/68810c44-bfdf-4311-8d50-3b627197684f) and click on Share -> Publish.
+L’application utilise le client généré dans `src/integrations/supabase`. Le
+schéma typé constitue le contrat entre les requêtes React et Supabase.
 
-## Can I connect a custom domain to my Lovable project?
+## Captures d’écran
 
-Yes, you can!
+Les futures captures sont regroupées dans `docs/screenshots/`.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Choix techniques
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- TanStack Query gère le cycle de vie des données distantes.
+- Recharts fournit les visualisations du dashboard.
+- Le client Supabase typé réduit les écarts entre schéma et interface.
+
+## Pistes d’amélioration
+
+- Vérifier et documenter les politiques Row Level Security Supabase.
+- Découper le bundle principal par route avec des imports dynamiques.
+- Étendre les tests aux transformations des données analytiques.
+
+## Licence
+
+Ce projet est distribué sous licence MIT. Voir [LICENSE](LICENSE).
