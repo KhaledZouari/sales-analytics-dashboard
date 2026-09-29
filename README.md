@@ -1,5 +1,7 @@
 # Sales Analytics Dashboard
 
+[![CI](https://github.com/KhaledZouari/sales-analytics-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/KhaledZouari/sales-analytics-dashboard/actions/workflows/ci.yml)
+
 Tableau de bord web pour consulter des indicateurs commerciaux, suivre leur
 évolution et explorer les clients et produits associés.
 
@@ -77,11 +79,16 @@ Les futures captures sont regroupées dans `docs/screenshots/`.
 - Recharts fournit les visualisations du dashboard.
 - Le client Supabase typé réduit les écarts entre schéma et interface.
 
-## Pistes d’amélioration
+## Limites connues et pistes d’amélioration
 
-- Vérifier et documenter les politiques Row Level Security Supabase.
+- Les politiques Row Level Security Supabase doivent encore être vérifiées et
+  documentées avant un déploiement public.
 - Découper le bundle principal par route avec des imports dynamiques.
-- Étendre les tests aux transformations des données analytiques.
+- Le test actuel couvre l’utilitaire de classes CSS ; les transformations de
+  données analytiques ne sont pas encore isolées dans des fonctions testables.
+- Six alertes npm restent liées à des migrations majeures de Vitest, Vite et
+  React Router ; aucune correction forcée n’est appliquée sans tests de
+  régression dédiés.
 
 ## Licence
 
