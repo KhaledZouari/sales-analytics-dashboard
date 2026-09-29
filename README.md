@@ -5,6 +5,8 @@
 Tableau de bord web pour consulter des indicateurs commerciaux, suivre leur
 évolution et explorer les clients et produits associés.
 
+[Voir la démonstration publique](https://khaledzouari.github.io/sales-analytics-dashboard/)
+
 ## Fonctionnalités
 
 - Vue synthétique d’indicateurs clés avec filtre par période.
@@ -12,7 +14,7 @@ Tableau de bord web pour consulter des indicateurs commerciaux, suivre leur
   principaux clients.
 - Pages dédiées au tableau de bord, aux statistiques, aux clients, aux
   produits et aux paramètres.
-- Accès aux données via un client Supabase typé.
+- Données de démonstration intégrées pour présenter les parcours analytiques.
 
 ## Stack
 
@@ -66,8 +68,9 @@ La CI exécute ces commandes sur chaque pull request et chaque push sur `main`.
 
 ## API et données
 
-L’application utilise le client généré dans `src/integrations/supabase`. Le
-schéma typé constitue le contrat entre les requêtes React et Supabase.
+La démonstration publique utilise actuellement les jeux de données intégrés aux
+pages. Le client Supabase typé prépare une future connexion à des données
+persistées, sans clé privée exposée dans le frontend.
 
 ## Captures d’écran
 
