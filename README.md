@@ -1,4 +1,4 @@
-# Stats Weaver Dashboard
+# Sales Analytics Dashboard
 
 Tableau de bord web pour consulter des indicateurs commerciaux, suivre leur
 évolution et explorer les clients et produits associés.
@@ -33,8 +33,8 @@ flowchart LR
 Prérequis : Node.js 20 et npm.
 
 ```bash
-git clone https://github.com/KhaledZouari/stats-weaver-dash.git
-cd stats-weaver-dash
+git clone https://github.com/KhaledZouari/sales-analytics-dashboard.git
+cd sales-analytics-dashboard
 cp .env.example .env
 npm ci
 npm run dev
