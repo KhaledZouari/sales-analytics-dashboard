@@ -1,5 +1,8 @@
 # Sales Analytics Dashboard
 
+[![CI](https://github.com/KhaledZouari/sales-analytics-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/KhaledZouari/sales-analytics-dashboard/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-2ea44f.svg)](LICENSE)
+
 An interactive web dashboard for monitoring sales performance, customers,
 products, and business KPIs.
 
