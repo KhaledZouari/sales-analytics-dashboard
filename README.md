@@ -1,40 +1,36 @@
 # Sales Analytics Dashboard
 
-[![CI](https://github.com/KhaledZouari/sales-analytics-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/KhaledZouari/sales-analytics-dashboard/actions/workflows/ci.yml)
+An interactive web dashboard for monitoring sales performance, customers,
+products, and business KPIs.
 
-Tableau de bord web pour consulter des indicateurs commerciaux, suivre leur
-évolution et explorer les clients et produits associés.
+[View the live demo](https://khaledzouari.github.io/sales-analytics-dashboard/)
 
-[Voir la démonstration publique](https://khaledzouari.github.io/sales-analytics-dashboard/)
+## Features
 
-## Fonctionnalités
-
-- Vue synthétique d’indicateurs clés avec filtre par période.
-- Graphiques d’évolution des ventes, de répartition des produits et des
-  principaux clients.
-- Pages dédiées au tableau de bord, aux statistiques, aux clients, aux
-  produits et aux paramètres.
-- Données de démonstration intégrées pour présenter les parcours analytiques.
+- Revenue and performance KPI cards
+- Sales trends and category breakdowns
+- Customer and product analysis
+- Interactive charts, filters, and responsive layouts
+- Typed data access prepared for Supabase integration
 
 ## Stack
 
 React 18, TypeScript, Vite, Supabase, TanStack Query, Recharts, shadcn/ui,
-Tailwind CSS, ESLint et Vitest.
+Tailwind CSS, ESLint, and Vitest.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-    Browser[Interface React] --> Pages[Pages analytiques]
-    Pages --> Components[Composants de dashboard]
-    Pages --> Query[TanStack Query]
-    Query --> Client[Client Supabase]
-    Client --> Database[(Supabase)]
+    Pages --> Components
+    Pages --> Queries[TanStack Query]
+    Queries --> Client[Typed Supabase client]
+    Components --> Charts[Recharts]
 ```
 
-## Installation
+## Local setup
 
-Prérequis : Node.js 20 et npm.
+Prerequisites: Node.js 20 and npm.
 
 ```bash
 git clone https://github.com/KhaledZouari/sales-analytics-dashboard.git
@@ -44,19 +40,19 @@ npm ci
 npm run dev
 ```
 
-Sous PowerShell, utiliser `Copy-Item .env.example .env` à la place de `cp`.
+On PowerShell, replace `cp` with `Copy-Item`.
 
 ## Configuration
 
-| Variable | Description |
+| Variable | Purpose |
 | --- | --- |
-| `VITE_SUPABASE_PROJECT_ID` | Identifiant public du projet Supabase. |
-| `VITE_SUPABASE_PUBLISHABLE_KEY` | Clé client publiable Supabase. |
-| `VITE_SUPABASE_URL` | URL publique du projet Supabase. |
+| `VITE_SUPABASE_URL` | Public Supabase project URL |
+| `VITE_SUPABASE_ANON_KEY` | Public anonymous client key |
+| `VITE_SUPABASE_PROJECT_ID` | Public Supabase project identifier |
 
-Ne jamais placer de clé `service_role` dans une variable exposée par Vite.
+Never expose a Supabase `service_role` key through a Vite variable.
 
-## Tests et qualité
+## Verification
 
 ```bash
 npm run lint
@@ -64,35 +60,11 @@ npm test
 npm run build
 ```
 
-La CI exécute ces commandes sur chaque pull request et chaque push sur `main`.
+The public demo currently uses datasets bundled with the pages. The typed
+Supabase client prepares a future persistent data source without exposing
+private credentials.
 
-## API et données
+## License
 
-La démonstration publique utilise actuellement les jeux de données intégrés aux
-pages. Le client Supabase typé prépare une future connexion à des données
-persistées, sans clé privée exposée dans le frontend.
+Distributed under the MIT License. See [LICENSE](LICENSE).
 
-## Captures d’écran
-
-Les futures captures sont regroupées dans `docs/screenshots/`.
-
-## Choix techniques
-
-- TanStack Query gère le cycle de vie des données distantes.
-- Recharts fournit les visualisations du dashboard.
-- Le client Supabase typé réduit les écarts entre schéma et interface.
-
-## Limites connues et pistes d’amélioration
-
-- Les politiques Row Level Security Supabase doivent encore être vérifiées et
-  documentées avant un déploiement public.
-- Découper le bundle principal par route avec des imports dynamiques.
-- Le test actuel couvre l’utilitaire de classes CSS ; les transformations de
-  données analytiques ne sont pas encore isolées dans des fonctions testables.
-- Six alertes npm restent liées à des migrations majeures de Vitest, Vite et
-  React Router ; aucune correction forcée n’est appliquée sans tests de
-  régression dédiés.
-
-## Licence
-
-Ce projet est distribué sous licence MIT. Voir [LICENSE](LICENSE).
