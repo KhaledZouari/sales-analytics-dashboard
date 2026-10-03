@@ -1,0 +1,18 @@
+{
+  "captured_on": "2026-10-03",
+  "kind": "runtime screenshots",
+  "images": [
+    {
+      "file": "clients.png",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "8de0f136b2ca59cddc741d249a9577a6db6b17d62286c7ecffc86d12bdb0a595"
+    },
+    {
+      "file": "products.png",
+      "width": 1440,
+      "height": 1000,
+      "sha256": "9013b968d6c1088671d2f71439fcb98a6437e81bf56e9eac1dddd498591192b2"
+    }
+  ]
+}

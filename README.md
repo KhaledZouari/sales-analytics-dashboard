@@ -63,11 +63,45 @@ npm test
 npm run build
 ```
 
-The public demo currently uses datasets bundled with the pages. The typed
-Supabase client prepares a future persistent data source without exposing
-private credentials.
+Client and product pages use bundled fictional examples. The main overview
+requires a separate Express API at `http://localhost:5000`, which is not
+included in this repository. Supabase integration is scaffolding only.
+
+## Business context and engineering approach
+
+### Sales-analysis interface prototype
+
+The React interface organizes KPI cards, chart components, client summaries and
+a product table. The available client and product pages use bundled fictional
+examples; the main overview calls an external Express API at localhost:5000.
+
+Reusable typed UI components and Recharts separate presentation from chart
+rendering. A typed Supabase client exists as integration scaffolding, but the
+displayed client and product examples are not sourced from Supabase.
+
+## Application screenshots
+
+Captured from the running application on 3 October 2026.
+
+### Client analysis prototype
+
+![Client analysis prototype](docs/screenshots/clients.png)
+
+Bundled fictional client cards and illustrative KPI values.
+
+### Product catalog prototype
+
+![Product catalog prototype](docs/screenshots/products.png)
+
+Bundled fictional products, stock and sales presentation.
+
+## Evidence and current scope
+
+The public repository does not include the Express API required by the overview.
+Product distribution is not populated by that page, the tax-rate value is hard-
+coded and the advanced-statistics page is a placeholder. This is a UI prototype
+rather than a verified end-to-end analytics pipeline.
 
 ## License
 
 Distributed under the MIT License. See [LICENSE](LICENSE).
-
